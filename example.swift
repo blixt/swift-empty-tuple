@@ -22,9 +22,9 @@ class ExampleTwo<T> {
 }
 
 class OrdinaryClass {
-    func zeroArguments() { print("This is OrdinaryClass.zeroArguments") }
+    func zeroArguments(_: Void) { print("This is OrdinaryClass.zeroArguments") }
     func oneArgument(x: Int) { print("This is OrdinaryClass.oneArgument (\(x))") }
-    func twoArguments(x: Int, y: Int) { print("This is OrdinaryClass.twoArguments (x * y = \(x * y))") }
+    func twoArguments(value: (x: Int, y: Int)) { print("This is OrdinaryClass.twoArguments (x * y = \(value.x * value.y))") }
 }
 
 let oc = OrdinaryClass()
