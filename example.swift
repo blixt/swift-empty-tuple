@@ -5,14 +5,14 @@ class ExampleOne<T> {
 }
 
 let example1 = ExampleOne<Void>()
-example1.oneArgument()
+example1.oneArgument(())
 
 
 
 class ExampleTwo<T> {
-    let closure: (T) -> ()
+    var closure: ((T) -> ())!
 
-    init<Class: AnyObject>(instance: Class, method: @escaping (Class) -> (T) -> ()) {
+    func prepare<Class: AnyObject>(instance: Class, method: @escaping (Class) -> (T) -> ()) {
         self.closure = {
             [weak instance] (value: T) in
             guard let instance = instance else { return }
@@ -29,11 +29,14 @@ class OrdinaryClass {
 
 let oc = OrdinaryClass()
 
-let example2a = ExampleTwo(instance: oc, method: OrdinaryClass.zeroArguments)
-example2a.closure()
+let example2a = ExampleTwo<Void>()
+example2a.prepare(instance: oc, method: OrdinaryClass.zeroArguments)
+example2a.closure(())
 
-let example2b = ExampleTwo(instance: oc, method: OrdinaryClass.oneArgument)
+let example2b = ExampleTwo<Int>()
+example2b.prepare(instance: oc, method: OrdinaryClass.oneArgument)
 example2b.closure(1337)
 
-let example2c = ExampleTwo(instance: oc, method: OrdinaryClass.twoArguments)
-example2c.closure(7, 191)
+let example2c = ExampleTwo<(Int, Int)>()
+example2c.prepare(instance: oc, method: OrdinaryClass.twoArguments)
+example2c.closure((7, 191))
